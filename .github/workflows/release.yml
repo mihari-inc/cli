@@ -1,0 +1,92 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    working-directory: cli
+
+jobs:
+  build:
+    name: Build ${{ matrix.artifact }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: bun-darwin-arm64
+            os: macos-latest
+            artifact: mihari-darwin-arm64
+          - target: bun-darwin-x64
+            os: macos-latest
+            artifact: mihari-darwin-x64
+          - target: bun-linux-arm64
+            os: ubuntu-latest
+            artifact: mihari-linux-arm64
+          - target: bun-linux-x64
+            os: ubuntu-latest
+            artifact: mihari-linux-x64
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bun build bin/mihari.ts --compile --target=${{ matrix.target }} --outfile dist/${{ matrix.artifact }}
+      - name: Package archive
+        run: |
+          cd dist
+          tar -czf ${{ matrix.artifact }}.tar.gz ${{ matrix.artifact }}
+          shasum -a 256 ${{ matrix.artifact }}.tar.gz > ${{ matrix.artifact }}.tar.gz.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: |
+            cli/dist/${{ matrix.artifact }}.tar.gz
+            cli/dist/${{ matrix.artifact }}.tar.gz.sha256
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*/*
+          generate_release_notes: true
+
+  publish-npm:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+      - run: bun install --frozen-lockfile
+      - run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  bump-homebrew:
+    needs: release
+    runs-on: ubuntu-latest
+    # Remove "if: false" when the tap repo is created and HOMEBREW_TAP_TOKEN is set.
+    if: false
+    steps:
+      - name: Bump Homebrew formula
+        uses: mislav/bump-homebrew-formula-action@v3
+        with:
+          formula-name: mihari
+          tap: mihari/homebrew-tap
+        env:
+          COMMITTER_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}

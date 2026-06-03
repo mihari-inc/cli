@@ -1,0 +1,18 @@
+openapi: 3.0.3
+info:
+  title: Messy API for CLI lint test
+  version: 1.0.0
+tags:
+  - name: no-desc
+paths:
+  /a:
+    get:
+      operationId: dup
+      responses:
+        '200':
+          description: OK
+    post:
+      operationId: dup
+      responses:
+        '200':
+          description: OK

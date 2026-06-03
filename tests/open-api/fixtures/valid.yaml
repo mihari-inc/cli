@@ -1,0 +1,22 @@
+openapi: 3.0.3
+info:
+  title: Mihari Test API
+  version: 1.0.0
+  description: Fixture used by the open-api domain tests
+servers:
+  - url: https://api.example.com
+paths:
+  /ping:
+    get:
+      operationId: ping
+      summary: Ping endpoint
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean

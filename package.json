@@ -1,0 +1,48 @@
+{
+  "name": "@mihari/cli",
+  "version": "0.1.0",
+  "description": "Mihari CLI — interact with Mihari services from your terminal",
+  "type": "module",
+  "bin": {
+    "mihari": "./bin/mihari.ts"
+  },
+  "scripts": {
+    "dev": "bun run bin/mihari.ts",
+    "start": "bun run bin/mihari.ts",
+    "build": "bun build bin/mihari.ts --compile --outfile dist/mihari",
+    "build:darwin-arm64": "bun build bin/mihari.ts --compile --target=bun-darwin-arm64 --outfile dist/mihari-darwin-arm64",
+    "build:darwin-x64": "bun build bin/mihari.ts --compile --target=bun-darwin-x64 --outfile dist/mihari-darwin-x64",
+    "build:linux-arm64": "bun build bin/mihari.ts --compile --target=bun-linux-arm64 --outfile dist/mihari-linux-arm64",
+    "build:linux-x64": "bun build bin/mihari.ts --compile --target=bun-linux-x64 --outfile dist/mihari-linux-x64",
+    "build:all": "bun run build:darwin-arm64 && bun run build:darwin-x64 && bun run build:linux-arm64 && bun run build:linux-x64",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@mihari/oas": "file:../oas",
+    "c12": "^2.0.1",
+    "citty": "^0.1.6",
+    "picocolors": "^1.1.1",
+    "semver": "^7.6.3"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/semver": "^7.5.8",
+    "typescript": "^5.7.0"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md"
+  ],
+  "engines": {
+    "bun": ">=1.1.0"
+  },
+  "keywords": [
+    "mihari",
+    "cli",
+    "changelog",
+    "conventional-commits",
+    "release"
+  ]
+}
