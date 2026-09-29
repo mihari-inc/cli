@@ -16,7 +16,7 @@ const fixtureSpec = join(
   "..",
   "..",
   "..",
-  "oas",
+  "openapi",
   "tests",
   "fixtures",
   "oas",

@@ -109,7 +109,7 @@ Supported auth types:
 - `apiKey` in header — via `--auth-apikey-header X-API-Key=<value>`
 - More types (apiKey in query, basic, OAuth2 flows) are on the roadmap.
 
-OpenAPI validation is powered by the sibling package [`@mihari/oas`](../oas) and supports both OpenAPI 3.0 and 3.1. See the oas package README for scope and the 3.1 Schema Object trade-off.
+OpenAPI validation is powered by the sibling package [`@mihari/oas`](https://github.com/mihari-inc/oas) and supports both OpenAPI 3.0 and 3.1. See the oas package README for scope and the 3.1 Schema Object trade-off.
 
 > Note: the `api` publish target posts to `POST {url}/changelogs`. The server-side endpoint is not implemented yet — the client payload shape is documented in `src/changelogs/core/types.ts`.
 

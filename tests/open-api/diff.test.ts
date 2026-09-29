@@ -8,7 +8,7 @@ const fixtures = join(
   "..",
   "..",
   "..",
-  "oas",
+  "openapi",
   "tests",
   "fixtures",
   "diff",

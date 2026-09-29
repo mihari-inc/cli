@@ -19,7 +19,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@mihari/oas": "file:../oas",
+    "@mihari/oas": "file:../openapi",
     "c12": "^2.0.1",
     "citty": "^0.1.6",
     "picocolors": "^1.1.1",
